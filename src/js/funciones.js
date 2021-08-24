@@ -1,4 +1,4 @@
-import { Todo } from "../class";
+import { Todo, TodoList } from "../class";
 import {todoList} from '../index'
 
 //Referencias en el HTML
@@ -7,6 +7,7 @@ const txtInput = document.querySelector('.new-todo');
 const btnEliminarCompletados = document.querySelector('.clear-completed');
 const ulFiltros   = document.querySelector('.filters');
 const anchorfiltros = document.querySelectorAll('.filtro');
+
 
 export const crearTodoHtml = (todo) =>{
 
@@ -30,10 +31,10 @@ export const crearTodoHtml = (todo) =>{
 txtInput.addEventListener('keyup', (event) => { //Keyup cuando suelto la tecla se dispara el evento
 
     if(event.keyCode === 13 && txtInput.value.length > 0){
-        console.log(txtInput.value);
         const nuevoTodo = new Todo(txtInput.value);
         todoList.nuevoTodo(nuevoTodo);
         crearTodoHtml(nuevoTodo);
+        todoList.todoPendientes();
         txtInput.value = '';
     }
 }); 
@@ -48,12 +49,12 @@ divTodoList.addEventListener('click',(event)=>{
    if(nombreElemento.includes('input')){ //click en el check
     todoList.todoComplete(todoId); //Lista de to-do marcar completado el todo que tena la id.
     todoElemento.classList.toggle('completed');  //Para hacer referencia a todas las clases, si existe la clase la quita y si no la pone.
-
+    todoList.todoPendientes();
    }else if(nombreElemento.includes('button')){ //click en el check
     
     todoList.eliminarTodo(todoId);
     divTodoList.removeChild(todoElemento); //sabemos el elemento, por lo que usamos para remover al elemento child del dom, el cual ya tenemos capturado.
-
+    todoList.todoPendientes();
    }
 
 });
@@ -68,6 +69,7 @@ btnEliminarCompletados.addEventListener('click',() => {
 
         if(elemento.classList.contains('completed')){
             divTodoList.removeChild(elemento);
+            todoList.todoPendientes();
         }
     }
 });
@@ -102,4 +104,6 @@ ulFiltros.addEventListener('click',(event)=>{
 
     }
 });
+
+
 

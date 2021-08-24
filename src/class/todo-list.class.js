@@ -4,6 +4,7 @@ export class TodoList {
 
     constructor(){
         this.cargarLocalStorage();
+        this.todoPendientes();
     }
 
     nuevoTodo(todo){ 
@@ -48,5 +49,12 @@ export class TodoList {
 
         this.todos = this.todos.map(Todo.fromJson); //Barre los elementos que estan dentro del array y retorna un nuevo un nuevo arreglo con los elem mutados.
     //  this.todos = this.todos.map(obj => Todo.fromJson(obj));
+    }
+
+    todoPendientes(){
+        const pendientes = this.todos.filter(todo => !todo.completado);
+        const numeroPendientes = document.querySelector('.todo-count strong');
+        numeroPendientes.textContent = pendientes.length;
+        this.guardarLocalStorage();
     }
 }
